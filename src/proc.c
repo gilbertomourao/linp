@@ -986,17 +986,38 @@ static void proc(Linp_Mat *src, Linp_Mat *dst, Linp_Word ***words,
 static void linp__procstr(Linp_Mat *src, Linp_Mat *dst, Linp_Word ***words, 
 				   		  char *string, char *dir, char *ign_chars, bool ign_cs)
 {
+	char error_msg[351] = "\0";
+	bool error_flag = false;
 	/* Verifica se src é válido */
 	if (src == NULL)
 	{
-		printf("ERRO: Em procstr. O parametro src nao pode ser NULL.\n");
-		exit(EXIT_FAILURE);
+		strcat(error_msg, "ERRO: Em procstr. O parametro src nao pode ser NULL.\n");
+		error_flag = true;
 	}
 	/* Verifica se a string é válida */
 	if (string == NULL)
 	{
-		printf("ERRO: Em procstr. O parametro string nao pode ser NULL. Se deseja "
-			   "procurar por palindromos, utilize a funcao procpali.\n");
+		strcat(error_msg, "ERRO: Em procstr. O parametro string nao pode ser NULL. Se deseja "
+			   			  "procurar por palindromos, utilize a funcao procpali.\n");
+		error_flag = true;
+	}
+	/* Verifica se dir é válida */
+	if (dir == NULL)
+	{
+		strcat(error_msg, "ERRO: Em procstr. O parametro dir nao pode ser NULL. Valores aceitos: " 
+			   			  "\"linhas\", \"colunas\", \"diagP\", \"diagS\" e \"todas\".\n");
+		error_flag = true;
+	}
+	/* Verifica se ign_chars é válida */
+	if (ign_chars == NULL)
+	{
+		strcat(error_msg, "ERRO: Em procstr. O parametro ign_chars nao pode ser NULL.\n");
+		error_flag = true;
+	}
+
+	if (error_flag)
+	{
+		puts(error_msg);
 		exit(EXIT_FAILURE);
 	}
 
@@ -1011,12 +1032,35 @@ static void linp__procstr(Linp_Mat *src, Linp_Mat *dst, Linp_Word ***words,
 static void linp__procpali(Linp_Mat *src, Linp_Mat *dst, Linp_Word ***words,
 				    	   char *dir, char *ign_chars, bool ign_cs)
 {
+	char error_msg[235] = "\0";
+	bool error_flag = false;
+
 	/* Verifica se src é válido */
 	if (src == NULL)
 	{
-		printf("ERRO: Em procpali. O parametro src nao pode ser NULL.\n");
+		strcat(error_msg, "ERRO: Em procpali. O parametro src nao pode ser NULL.\n");
+		error_flag = true;
+	}
+	/* Verifica se dir é válida */
+	if (dir == NULL)
+	{
+		strcat(error_msg, "ERRO: Em procpali. O parametro dir nao pode ser NULL. Valores aceitos: " 
+			 			  "\"linhas\", \"colunas\", \"diagP\", \"diagS\" e \"todas\".\n");
+		error_flag = true;
+	}
+	/* Verifica se ign_chars é válida */
+	if (ign_chars == NULL)
+	{
+		strcat(error_msg, "ERRO: Em procpali. O parametro ign_chars nao pode ser NULL.\n");
+		error_flag = true;
+	}
+
+	if (error_flag)
+	{
+		puts(error_msg);
 		exit(EXIT_FAILURE);
 	}
+
 	/* Chama proc com string = NULL para procurar por palíndromos */
 	proc(src, dst, words, NULL, dir, ign_chars, ign_cs);
 }
