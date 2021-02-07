@@ -80,7 +80,8 @@ struct linp_namespace
 					char *, char *, bool);
 
 	/* word.c */
-	void (*destruirword)(Linp_Word *);
+	void (*destruirlista)(Linp_Word *);
+	void (*destruirword)(Linp_Word **, unsigned);
 };
 
 extern struct linp_namespace lp;

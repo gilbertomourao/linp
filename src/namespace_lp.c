@@ -41,8 +41,9 @@ struct linp_namespace lp = {/* array.c */
 							.dispmat = linp__dispmat,
 							/* input.c */
 							.input = linp__input,
-							/* word.c */
-							.destruirword = linp__destruirword,
 							/* proc.c */
 							.procstr = linp__procstr, 
-							.procpali = linp__procpali};
+							.procpali = linp__procpali, 
+							/* word.c */
+							.destruirlista = linp__destruirlista, 
+							.destruirword = linp__destruirword};

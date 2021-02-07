@@ -31,7 +31,7 @@
 /**
  * Destrói a lista encadeada de palavras L.
  */
-static void linp__destruirword(Linp_Word *L)
+static void linp__destruirlista(Linp_Word *L)
 {
 	Linp_Word *temp;
 
@@ -42,4 +42,19 @@ static void linp__destruirword(Linp_Word *L)
 		free(temp->word);
 		free(temp);
 	}
+}
+
+/**
+ * Destrói o array de listas encadeadas de palavras L.
+ */
+static void linp__destruirword(Linp_Word **L, unsigned size)
+{
+	unsigned i;
+
+	for (i = 0; i < size; i++)
+	{
+		linp__destruirlista(L[i]);
+	}
+
+	free(L);
 }
