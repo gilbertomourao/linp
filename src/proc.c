@@ -956,12 +956,7 @@ static void proc(Linp_Mat *src, Linp_Mat *dst, Linp_Word ***words,
 	/* Libera a memória previamente alocada */
 	if (words == NULL)
 	{
-		for (pos = 0; pos < size; pos++)
-		{
-			lp.destruirword(posicoes[pos]);
-		}
-
-		free(posicoes);
+		lp.destruirword(posicoes, size);
 	}
 	else 
 	{

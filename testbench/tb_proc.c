@@ -60,13 +60,9 @@ int main()
 	lp.destruirmat(src);
 	lp.destruirmat(dst1);
 	lp.destruirmat(dst2);
-
-	for (i = 0; i < 4; i++)
-	{
-		lp.destruirword(palavras[i]);
-		lp.destruirword(palindromos[i]);
-	}
-
+	lp.destruirword(palavras, 4);
+	lp.destruirword(palindromos, 4);
+	
 	return 0;
 }
 
