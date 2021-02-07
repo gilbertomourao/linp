@@ -60,6 +60,23 @@ typedef struct linp__word
 
 /**
  * Funções
+ *
+ * Implementação do namespace lp. As funções em LINP 
+ * utilizam o namespace lp para evitar conflitos com 
+ * funções dos alunos que podem ter o mesmo nome. Por 
+ * exemplo, um aluno pode criar uma função "criarmat" 
+ * da seguinte maneira:
+ *
+ * Linp_Mat *criarmat(unsigned, unsigned);
+ *
+ * Essa função será diferente da função criarmat em LINP. 
+ * Na main, o usuário pode chamar a sua função e a criarmat 
+ * em LINP sem que haja conflito. Exemplo: 
+ *
+ * criarmat(100, 100); 
+ * lp.criarmat(100, 100);
+ *
+ * Veja o testbench para namespace em testbench/tb_namespace.c
  */
 
 struct linp_namespace

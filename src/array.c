@@ -44,7 +44,7 @@ static Linp_Mat *linp__criarmat(unsigned rows, unsigned cols)
 		exit(EXIT_FAILURE);
 	}
 
-	mat->data = malloc(rows * sizeof(Linp_Mat *));
+	mat->data = malloc(rows * sizeof(char *));
 	if (mat->data == NULL)
 	{
 		printf("ERRO: Em criarmat. Nao foi possivel alocar memoria para a variavel data.\n");
@@ -53,7 +53,7 @@ static Linp_Mat *linp__criarmat(unsigned rows, unsigned cols)
 
 	for (i = 0; i < rows; i++)
 	{
-		mat->data[i] = malloc(cols * sizeof(Linp_Mat));
+		mat->data[i] = malloc(cols * sizeof(char));
 		if (mat->data[i] == NULL)
 		{
 			printf("ERRO: Em criarmat. Nao foi possivel alocar memoria para a variavel data[%u].\n", i);
