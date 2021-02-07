@@ -101,7 +101,7 @@ static void linp__destruirmat(Linp_Mat *mat)
  */
 static void linp__lerarquivo(Linp_Mat *array, char *text_file)
 {
-	int i, j, flag, cols = 0;
+	int i, j, flag = 1, cols = 0;
 	bool eol = false;
 	char ch; /*consome caracteres*/
 	unsigned i_limit = array->rows, j_limit = array->cols;
