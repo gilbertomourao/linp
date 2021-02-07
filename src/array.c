@@ -81,6 +81,7 @@ static void linp__destruirmat(Linp_Mat *mat)
 		free(mat->data[i]);
 
 	free(mat->data);
+	free(mat);
 }
 
 /**
