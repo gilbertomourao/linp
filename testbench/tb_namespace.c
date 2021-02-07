@@ -42,7 +42,7 @@ Linp_Mat *criarmat(unsigned rows, unsigned cols)
 int main()
 {
 	/* Verifica se haverá conflito entre as duas funções */
-	Linp_Mat *mat1 = criarmat(100,100);
+	Linp_Mat *mat1 = criarmat(100, 100);
 	Linp_Mat *mat2 = lp.criarmat(100, 100);
 
 	lp.lerarquivo(mat1, "txt/Matriz_P1.txt");
