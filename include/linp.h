@@ -81,10 +81,14 @@ typedef struct linp__word
 
 struct linp_namespace
 {
+	/* heap.c */
+	void (*start)();
+	void (*stop)();
+
 	/* array.c */
 	Linp_Mat *(*criarmat)(unsigned, unsigned);
-	void (*destruirmat)(Linp_Mat *);
 	void (*lerarquivo)(Linp_Mat *, char *);
+	void (*criararquivo)(Linp_Mat *, char *);
 	void (*dispmat)(Linp_Mat *, char *);
 
 	/* input.c */
@@ -95,10 +99,6 @@ struct linp_namespace
 					char *, char *, char *, bool);
 	void (*procpali)(Linp_Mat *, Linp_Mat *, Linp_Word ***, 
 					char *, char *, bool);
-
-	/* word.c */
-	void (*destruirlista)(Linp_Word *);
-	void (*destruirword)(Linp_Word **, unsigned);
 };
 
 extern struct linp_namespace lp;

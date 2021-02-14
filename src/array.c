@@ -36,6 +36,13 @@
  */
 static Linp_Mat *linp__criarmat(unsigned rows, unsigned cols)
 {
+	/* Verifica se está dentro de um bloco LINP */
+	if (heap_count == 0)
+	{
+		printf("ERRO: Em criarmat. Esta funcao so pode ser invocada dentro de um bloco LINP.\n");
+		exit(EXIT_FAILURE);
+	}
+
 	unsigned i;
 	Linp_Mat *mat = malloc(sizeof(Linp_Mat));
 	if (mat == NULL)
@@ -64,24 +71,21 @@ static Linp_Mat *linp__criarmat(unsigned rows, unsigned cols)
 	mat->rows = rows;
 	mat->cols = cols;
 
+	/* Adiciona o bloco de memória alocada para o heap atual */
+	Arrays *new;
+
+	new = malloc(sizeof(Arrays));
+	if (new == NULL)
+	{
+		printf("ERRO: Em criarmat. Nao foi possivel adicionar o novo array ao heap.\n");
+		exit(EXIT_FAILURE);
+	}
+
+	new->arr_add = mat;
+	new->next = heap->arr;
+	heap->arr = new;
+
 	return mat;
-}
-
-/**
- * destruirmat 
- *
- * Destrói uma matriz previamente criada, liberando 
- * a memória alocada no endereço correspondente.
- */
-static void linp__destruirmat(Linp_Mat *mat)
-{
-	unsigned i;
-
-	for (i = 0; i < mat->rows; i++)
-		free(mat->data[i]);
-
-	free(mat->data);
-	free(mat);
 }
 
 /**
@@ -153,6 +157,31 @@ static void linp__lerarquivo(Linp_Mat *array, char *text_file)
 		printf("\nWARNING: Reached the limit of LINP Linp_Matrix read function. ");
 		printf("The Linp_Matrix on the text file may not have been properly read.\n");
 	}
+}
+
+/**
+ * criararquivo
+ *
+ * Cria um arquivo com o conteúdo de array.
+ */
+static void linp__criararquivo(Linp_Mat *array, char *text_file)
+{
+	FILE *file;
+
+	file = fopen(text_file, "w"); /* cria o arquivo para escrita (write) */
+
+	unsigned i, j;
+
+	for (i = 0; i < array->rows; i++)
+	{
+		for (j = 0; j < array->cols; j++)
+		{
+			fputc(array->data[i][j], file); /* Insere o caracter na posição [i][j] no arquivo */
+		}
+		fputc('\n', file);
+	}
+
+	fclose(file); /* fecha o arquivo */
 }
 
 /**

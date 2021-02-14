@@ -8,6 +8,8 @@
 
 int main()
 {
+	lp.start();
+
 	Linp_Mat *mat1 = lp.criarmat(100,100);
 	Linp_Mat *mat2 = lp.criarmat(100,100);
 
@@ -17,8 +19,7 @@ int main()
 	lp.dispmat(mat1, "Matriz 1");
 	lp.dispmat(mat2, "Matriz 2");
 
-	lp.destruirmat(mat1);
-	lp.destruirmat(mat2);
+	lp.stop();
 
 	return 0;
 }

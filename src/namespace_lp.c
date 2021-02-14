@@ -26,24 +26,25 @@
 
 #include "../include/linp.h"
 
+#include "heap.c"
 #include "array.c"
 #include "input.c"
 #include "proc.c"
-#include "word.c"
 
 /**
  * Adiciona as funções ao namespace lp
  */
-struct linp_namespace lp = {/* array.c */
-							.criarmat = linp__criarmat, 
-							.destruirmat = linp__destruirmat,
+struct linp_namespace lp = {/* heap.c */
+							.start = linp__start,
+							.stop = linp__stop,
+							/* array.c */
+							.criarmat = linp__criarmat,
 							.lerarquivo = linp__lerarquivo,
+							.criararquivo = linp__criararquivo,
 							.dispmat = linp__dispmat,
 							/* input.c */
 							.input = linp__input,
 							/* proc.c */
 							.procstr = linp__procstr, 
-							.procpali = linp__procpali, 
-							/* word.c */
-							.destruirlista = linp__destruirlista, 
-							.destruirword = linp__destruirword};
+							.procpali = linp__procpali
+						   };

@@ -15,6 +15,8 @@
 
 int main()
 {
+	lp.start();
+
 	Linp_Mat *src = lp.criarmat(100,100);
 	Linp_Mat *dst1 = lp.criarmat(100,100);
 	Linp_Mat *dst2 = lp.criarmat(100,100);
@@ -57,11 +59,7 @@ int main()
 	}
 
 	/* Libera a memória previamente alocada */
-	lp.destruirmat(src);
-	lp.destruirmat(dst1);
-	lp.destruirmat(dst2);
-	lp.destruirword(palavras, 4);
-	lp.destruirword(palindromos, 4);
+	lp.stop();
 	
 	return 0;
 }

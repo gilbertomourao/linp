@@ -625,7 +625,7 @@ static Linp_Word **pos_array(unsigned size)
 {
 	Linp_Word **aux;
 
-	aux = malloc(size * sizeof(Linp_Word *));
+	aux = malloc((size + 1) * sizeof(Linp_Word *));
 	if (aux == NULL)
 	{
 		printf("ERRO: Em proc. Na funcao pos_array. Nao foi possivel alocar memoria para a variavel *aux.\n");
@@ -638,6 +638,21 @@ static Linp_Word **pos_array(unsigned size)
 	{
 		aux[i] = NULL;
 	}
+	aux[size] = NULL; /* Indica o término do array de listas word */
+
+	/* Adiciona o bloco de memória alocada para o heap atual */
+	Words *new;
+
+	new = malloc(sizeof(Words));
+	if (new == NULL)
+	{
+		printf("ERRO: Em proc. Na funcao pos_array. Nao foi possivel adicionar o novo array de words ao heap.\n");
+		exit(EXIT_FAILURE);
+	}
+
+	new->word_add = aux;
+	new->next = heap->w;
+	heap->w = new;
 
 	return aux;
 }
@@ -870,6 +885,13 @@ static void destacadiagS(Linp_Mat *src, Linp_Mat *dst, Linp_Word *posicoes)
 static void proc(Linp_Mat *src, Linp_Mat *dst, Linp_Word ***words, 
 				 char *string, char *dir, char *ign_chars, bool ign_cs)
 {
+	/* Verifica se está dentro de um bloco LINP */
+	if (words && heap_count == 0)
+	{
+		printf("ERRO: Em proc. Esta funcao so pode alocar memoria para words dentro de um bloco LINP.\n");
+		exit(EXIT_FAILURE);
+	}
+
 	/* Inicializa dst */
 	dst->rows = src->rows;
 	dst->cols = src->cols;
@@ -956,7 +978,8 @@ static void proc(Linp_Mat *src, Linp_Mat *dst, Linp_Word ***words,
 	/* Libera a memória previamente alocada */
 	if (words == NULL)
 	{
-		lp.destruirword(posicoes, size);
+		linp__destruirword(posicoes);
+		heap->w = heap->w->next;
 	}
 	else 
 	{

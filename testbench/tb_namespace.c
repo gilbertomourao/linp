@@ -39,10 +39,24 @@ Linp_Mat *criarmat(unsigned rows, unsigned cols)
 	return ret_mat;
 }
 
+void destruirmat(Linp_Mat *mat)
+{
+	unsigned i;
+
+	for (i = 0; i < mat->rows; i++)
+		free(mat->data[i]);
+
+	free(mat->data);
+	free(mat);
+	mat = NULL;
+}
+
 int main()
 {
+	lp.start();
+
 	/* Verifica se haverá conflito entre as duas funções */
-	Linp_Mat *mat1 = criarmat(100, 100);
+	Linp_Mat *mat1 = criarmat(100, 100); /* Não transfere mat1 para o heap! */
 	Linp_Mat *mat2 = lp.criarmat(100, 100);
 
 	lp.lerarquivo(mat1, "txt/Matriz_P1.txt");
@@ -51,8 +65,9 @@ int main()
 	lp.dispmat(mat1, "Matriz 1");
 	lp.dispmat(mat2, "Matriz 2");
 
-	lp.destruirmat(mat1);
-	lp.destruirmat(mat2);
+	destruirmat(mat1);
+
+	lp.stop();
 
 	return 0;
 }
