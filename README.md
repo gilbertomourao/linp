@@ -41,11 +41,12 @@ Na tabela abaixo, leia matriz e entenda Linp_Mat, o tipo padrão de matriz da bi
 
 | Função | Descrição |
 | --- | --- |
+| start | Inicia um bloco LINP. |
+| stop | Finaliza um bloco LINP, liberando toda a memória alocada dinamicamente dentro dele. |
 | criarmat | Cria uma matriz dinamicamente com linhas e colunas fornecidos pelo usuário. |
-| destruirmat | Libera a memória previamente alocada pela função criarmat. |
 | lerarquivo | Lê um arquivo de texto e armazena os caracteres em uma matriz passada como parâmetro. |
+| criararquivo | Cria um arquivo texto a partir de uma matriz. |
 | dispmat | Imprime a matriz na tela. |
 | input | Lê dados em stdin e armazena em uma variável passada como parâmetro pelo usuário. |
 | procstr | Procura pela string na matriz. Pode destacar essa string em outra matriz para melhor visualização e também armazena as posições onde encontrou cada variante da string. |
 | procpali | Procura por palíndromos na matriz. Pode destacar os palíndromos encontrados em outra matriz para melhor visualização e também armazena as posições onde encontrou cada palíndromo. |
-| destruirword | Libera a memória previamente alocada para uma struct do tipo Linp_Word em forma de lista encadeada. |
