@@ -31,7 +31,7 @@ int main()
 	lp.procpali(src, dst1, &palindromos, "todas", "!alfanum", true);
 	lp.dispmat(dst1,"Palindromos");
 
-	for (i = 0; i < 4; i++)
+	for (i = 0; palindromos[i]; i++)
 	{
 		Linp_Word *varre = palindromos[i];
 		while (varre)
@@ -46,7 +46,7 @@ int main()
 	lp.procstr(src, dst2, &palavras, string, "todas", "!alfanum", true);
 	lp.dispmat(dst2,"String");
 
-	for (i = 0; i < 4; i++)
+	for (i = 0; palavras[i]; i++)
 	{
 		Linp_Word *varre = palavras[i];
 		while (varre)
