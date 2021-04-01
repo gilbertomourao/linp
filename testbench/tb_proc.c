@@ -43,7 +43,7 @@ int main()
 		}
 	}
 
-	lp.procstr(src, dst2, &palavras, string, "todas", "!alfanum", true);
+	lp.procstr(src, dst2, &palavras, string, "todas", "!alfabet", true);
 	lp.dispmat(dst2,"String");
 
 	for (i = 0; palavras[i]; i++)

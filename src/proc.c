@@ -33,10 +33,16 @@
 /* #include <stdbool.h> */
 
 /**
- * Macro que define se um caractere é alfanumérito. 
- * VALID_CHAR(ch) = 1 se ch for alfanumérito, 0 caso contrário.
+ * Macro que define se um caractere é alfabético.
+ * ALFABET(ch) = 1 se ch for alfabético, 0 caso contrário.
  */
-#define VALID_CHAR(ch) ((tolower(ch) >= 'a' && tolower(ch) <= 'z') || (ch >= '1' && ch <= '9') )
+#define ALFABET(ch) (tolower(ch) >= 'a' && tolower(ch) <= 'z')
+
+/**
+ * Macro que define se um caractere é alfanumérito. 
+ * ALFANUM(ch) = 1 se ch for alfanumérito, 0 caso contrário.
+ */
+#define ALFANUM(ch) (ALFABET(ch) || (ch >= '0' && ch <= '9'))
 
 /**
  * Caractere retornado como lower char se ign_cs for = true.
@@ -68,10 +74,13 @@ static int list_repetido(char *list, char ch)
  */
 static int ignorac(char *list, char ch)
 {
+	if (list[0] == (char) 254)
+		return !ALFABET(ch);
+
 	if (list[0] == (char) 255)
-		return !VALID_CHAR(ch);
-	else
-		return list_repetido(list, ch);
+		return !ALFANUM(ch);
+
+	return list_repetido(list, ch);
 }
 
 /**
@@ -89,7 +98,18 @@ static char *list_ign(char *ign_chars, bool ign_cs)
 		exit(EXIT_FAILURE);
 	}
 
-	/* Ignora todos os caracteres alfanuméricos e utiliza o caractere 
+	/**
+	 * Ignora todos os caracteres não alfabéticos e utiliza o caractere
+	 * (char) 254 para identificar essa condição.
+	 */
+	if (!strcmp(ign_chars, "!alfabet"))
+	{
+		list[0] = (char) 254;
+		list[1] = '\0';
+		return list;
+	}
+
+	/* Ignora todos os caracteres não alfanuméricos e utiliza o caractere 
 	 * NBSP para identificar essa condição.
 	 */
 	if (!strcmp(ign_chars, "!alfanum"))
