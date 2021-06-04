@@ -28,7 +28,7 @@ int main()
 	lp.lerarquivo(src, "txt/camomile.txt");
 	lp.dispmat(src, "Matriz");
 
-	lp.procpali(src, dst1, &palindromos, "todas", "!alfanum", true);
+	lp.procpali(src, dst1, &palindromos, "LCPS", "!alfanum", true);
 	lp.dispmat(dst1,"Palindromos");
 
 	for (i = 0; palindromos[i]; i++)
@@ -43,7 +43,7 @@ int main()
 		}
 	}
 
-	lp.procstr(src, dst2, &palavras, string, "todas", "!alfabet", true);
+	lp.procstr(src, dst2, &palavras, string, "LCPS", "!alfabet", true);
 	lp.dispmat(dst2,"String");
 
 	for (i = 0; palavras[i]; i++)

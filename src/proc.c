@@ -712,7 +712,7 @@ static Linp_Word **pos_array(unsigned size)
  * lp.proc(grid, palindromos, NULL, "todas", "!alfanum", 1);
  * 
  */
-static void kernelproc(Linp_Mat *array, Linp_Word ***pos, char *string, int dir, char *ign_chars, bool ign_cs)
+static void kernelproc(Linp_Mat *array, Linp_Word ***pos, char *string, char *dir, char *ign_chars, bool ign_cs)
 {
 	/**
 	 * Prepara a lista de caracteres a serem ignorados, a string 
@@ -749,44 +749,38 @@ static void kernelproc(Linp_Mat *array, Linp_Word ***pos, char *string, int dir,
 	/**
 	 * Verifica a direção da procura e aloca memória para pos
 	 */
-	switch (dir)
+	unsigned size = strlen(dir);
+
+	*pos = pos_array(size);
+
+	unsigned i;
+
+	for (i = 0; dir[i]; i++)
 	{
-		case 1:
+		switch(dir[i])
 		{
-			*pos = pos_array(1);
-			proclin(array, pos[0], ignorar, ign_cs, string1, string_aux, strauxlen, string3);
-			break;
-		}
-		case 2:
-		{
-			*pos = pos_array(1);
-			proccol(array, pos[0], ignorar, ign_cs, string1, string_aux, strauxlen, string3);
-			break;
-		}
-		case 3:
-		{
-			*pos = pos_array(1);
-			procdiP(array, pos[0], ignorar, ign_cs, string1, string_aux, strauxlen, string3);
-			break;
-		}
-		case 4:
-		{
-			*pos = pos_array(1);
-			procdiS(array, pos[0], ignorar, ign_cs, string1, string_aux, strauxlen, string3);
-			break;
-		}
-		case 0:
-		{
-			*pos = pos_array(4);
-			proclin(array, &pos[0][0], ignorar, ign_cs, string1, string_aux, strauxlen, string3);
-			proccol(array, &pos[0][1], ignorar, ign_cs, string1, string_aux, strauxlen, string3);
-			procdiP(array, &pos[0][2], ignorar, ign_cs, string1, string_aux, strauxlen, string3);
-			procdiS(array, &pos[0][3], ignorar, ign_cs, string1, string_aux, strauxlen, string3);
-			break;
-		}
-		default:
-		{
-			break;
+			case 'L':
+			{
+				proclin(array, &pos[0][i], ignorar, ign_cs, string1, string_aux, strauxlen, string3);
+				break;
+			}
+			case 'C':
+			{
+				proccol(array, &pos[0][i], ignorar, ign_cs, string1, string_aux, strauxlen, string3);
+				break;
+			}
+			case 'P':
+			{
+				procdiP(array, &pos[0][i], ignorar, ign_cs, string1, string_aux, strauxlen, string3);
+				break;
+			}
+			case 'S':
+			{
+				procdiS(array, &pos[0][i], ignorar, ign_cs, string1, string_aux, strauxlen, string3);
+				break;
+			}
+			default:
+				break;
 		}
 	}
 
@@ -800,22 +794,44 @@ static void kernelproc(Linp_Mat *array, Linp_Word ***pos, char *string, int dir,
 /**
  * Verifica se a direção passada é válida
  */
-static int validdir(char *dir)
+static void validdir(char *dir)
 {
-	int id_dir; /* identificador da direção de procura */
-
-	if (!strcmp(dir, "linhas")) id_dir = 1; else 
-	if (!strcmp(dir, "colunas")) id_dir = 2; else 
-	if (!strcmp(dir, "diagP")) id_dir = 3; else 
-	if (!strcmp(dir, "diagS")) id_dir = 4; else 
-	if (!strcmp(dir, "todas")) id_dir = 0; else {
+	if (strcmp(dir, "L") && 
+		strcmp(dir, "C") && 
+		strcmp(dir, "P") && 
+		strcmp(dir, "S") && 
+		strcmp(dir, "LC") && 
+		strcmp(dir, "LP") && 
+		strcmp(dir, "LS") && 
+		strcmp(dir, "CP") && 
+		strcmp(dir, "CS") && 
+		strcmp(dir, "PS") && 
+		strcmp(dir, "LCP") && 
+		strcmp(dir, "LCS") && 
+		strcmp(dir, "LPS") && 
+		strcmp(dir, "CPS") && 
+		strcmp(dir, "LCPS")) 
+	{
 		printf("ERRO: Em proc. Argumento invalido para dir. Este parametro aceita somente "
-			   "as strings \"linhas\", \"colunas\", \"diagP\", \"diagS\" e \"todas\". Veja "
-			   "a documentacao para mais detalhes.\n");
+			   "as strings abaixo.\n"
+			   "\"L\": procura nas linhas\n"
+			   "\"C\": procura nas colunas\n"
+			   "\"P\": procura na direcao da diagonal principal\n"
+			   "\"S\": procura na direcao da diagonal secundaria\n"
+			   "\"LC\": procura nas direcoes L e C\n"
+			   "\"LP\": procura nas direcoes L e P\n"
+			   "\"LS\": procura nas direcoes L e S\n"
+			   "\"CP\": procura nas direcoes C e P\n"
+			   "\"CS\": procura nas direcoes C e S\n"
+			   "\"PS\": procura nas direcoes P e S\n"
+			   "\"LCP\": procura nas direcoes L, C e P\n"
+			   "\"LCS\": procura nas direcoes L, C e S\n"
+			   "\"LPS\": procura nas direcoes L, P e S\n"
+			   "\"CPS\": procura nas direcoes C, P e S\n"
+			   "\"LCPS\": procura nas direcoes L, C, P e S\n"
+			   "Veja a documentacao para mais detalhes.\n");
 		exit(EXIT_FAILURE);
 	}
-
-	return id_dir;
 }
 
 /**
@@ -912,6 +928,8 @@ static void proc(Linp_Mat *src, Linp_Mat *dst, Linp_Word ***words,
 		exit(EXIT_FAILURE);
 	}
 
+	validdir(dir);
+
 	/* Inicializa dst */
 	dst->rows = src->rows;
 	dst->cols = src->cols;
@@ -923,74 +941,54 @@ static void proc(Linp_Mat *src, Linp_Mat *dst, Linp_Word ***words,
 	/* Procura pelas ocorrências */
 	Linp_Word **posicoes;
 
-	int id_dir = validdir(dir); /* identificador da direção de procura */
-
-	kernelproc(src, &posicoes, string, id_dir, ign_chars, ign_cs);
-
-	int size = (id_dir) ? 1 : 4; /* Tamanho do array posicoes */
-
-	/* Destaca as ocorrências em dst */
-	int pos;
+	kernelproc(src, &posicoes, string, dir, ign_chars, ign_cs);
 
 	if (dst)
 	{
-		switch (id_dir)
+		for (i = 0; dir[i]; i++)
 		{
-			case 1:
+			Linp_Word *varre = posicoes[i];
+
+			switch(dir[i])
 			{
-				Linp_Word *varre = posicoes[0];
-				while (varre)
+				case 'L':
 				{
-					destacalinhas(src, dst, varre);
-					varre = varre->next;
-				}
-				break;
-			}
-			case 2:
-			{
-				Linp_Word *varre = posicoes[0];
-				while (varre)
-				{
-					destacacolunas(src, dst, varre);
-					varre = varre->next;
-				}
-				break;
-			}
-			case 3:
-			{
-				Linp_Word *varre = posicoes[0];
-				while (varre)
-				{
-					destacadiagP(src, dst, varre);
-					varre = varre->next;
-				}
-				break;
-			}
-			case 4:
-			{
-				Linp_Word *varre = posicoes[0];
-				while (varre)
-				{
-					destacadiagS(src, dst, varre);
-					varre = varre->next;
-				}
-				break;
-			}
-			case 0:
-			{
-				for (pos = 0; pos < size; pos++)
-				{
-					Linp_Word *varre = posicoes[pos];
 					while (varre)
 					{
-						if (pos == 0) destacalinhas(src, dst, varre);
-						if (pos == 1) destacacolunas(src, dst, varre);
-						if (pos == 2) destacadiagP(src, dst, varre);
-						if (pos == 3) destacadiagS(src, dst, varre);
+						destacalinhas(src, dst, varre);
 						varre = varre->next;
 					}
+					break;
 				}
-				break;
+				case 'C':
+				{
+					while (varre)
+					{
+						destacacolunas(src, dst, varre);
+						varre = varre->next;
+					}
+					break;
+				}
+				case 'P':
+				{
+					while (varre)
+					{
+						destacadiagP(src, dst, varre);
+						varre = varre->next;
+					}
+					break;
+				}
+				case 'S':
+				{
+					while (varre)
+					{
+						destacadiagS(src, dst, varre);
+						varre = varre->next;
+					}
+					break;
+				}
+				default:
+					break;
 			}
 		}
 	}
