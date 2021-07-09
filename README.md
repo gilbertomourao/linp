@@ -33,7 +33,7 @@ Em um arquivo c, utilize #include <linp.h>.
 
 LINP possui algumas funções cobradas em provas, mas não se limita a isso. Se algum aluno julgar uma função criada por ele como importante, basta fazer contato com um dos contribuidores do repositório e enviar um arquivo c contendo a função e o seu uso.
 
-As funções em LINP são precedidas do namespace lp. Por exemplo, a função criarmat é escrita como lp.criarmat(). Atualmente existe também a macro input que permite interação com o usuário e limpa o buffer automaticamente. 
+As funções em LINP são precedidas do namespace lp. Por exemplo, as funções criarmat e input são escritas como lp.criarmat() e lp.input().
 
 ### Funções Existentes (em construção)
 
